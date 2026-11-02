@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: civicsphere-postgres
+    environment:
+      POSTGRES_USER: ${DB_USER:-civicsphere}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-troque_esta_senha_local}
+      POSTGRES_DB: ${DB_NAME:-civicsphere}
+    ports:
+      - "5432:5432"
+    volumes:
+      - civicsphere_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-civicsphere}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  civicsphere_pgdata:
